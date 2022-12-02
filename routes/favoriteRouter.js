@@ -111,6 +111,9 @@ favoriteRouter
         Favorite.findOne({ user: req.user._id })
             .then((favorites) => {
                 if (favorites) {
+                    if (favorites.campsites.indexOf(req.params.campsiteId) === -1) {
+                        return;
+                    } else {
                     favorites.campsites.splice(
                         favorites.campsites.indexOf(req.params.campsiteId),
                         1,
@@ -121,7 +124,7 @@ favoriteRouter
                         res.setHeader("Content-Type", "application/json");
                         res.json(favorites);
                     });
-                } else {
+                }} else {
                     res.statusCode = 403;
                     res.setHeader("Content-Type", "text/plain");
                     res.end(`A favorite document doesnt exist for ${req.user}`);
